@@ -1,14 +1,12 @@
 package com.openheimer.demo.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -55,7 +53,7 @@ public class UserDTO {
 	}
 	
 	public User convert() {
-		return new User(name, email, password);
+		return new User(name, email, new BCryptPasswordEncoder().encode(password));
 	}
 	
 	public static Page<UserDTO> convertPageToPageUserDTO(Page<User> result) {
