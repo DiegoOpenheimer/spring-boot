@@ -33,10 +33,10 @@ public class UserFilterRequest extends OncePerRequestFilter {
 		String token = recoverToken(request);
 		if (tokenService.valid(token)) {
 			Optional<User> user = userRepository.findById(tokenService.getUserIdFromToken(token));
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get(), null);
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get(), null, user.get().getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication( authentication );
 		}
-		super.doFilter(request, response, filterChain);
+		filterChain.doFilter(request, response);
 	}
 	
 	private String recoverToken(HttpServletRequest request) {

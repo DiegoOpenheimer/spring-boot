@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -26,7 +25,7 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private UserService userDetailsService;
 	
 	@Override
 	@Bean
@@ -50,6 +49,7 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/users").permitAll()
+				.antMatchers(HttpMethod.POST, "/auth").permitAll()
 				.antMatchers("/h2", "/h2/**").permitAll()
 				.anyRequest().authenticated()
 				.and()

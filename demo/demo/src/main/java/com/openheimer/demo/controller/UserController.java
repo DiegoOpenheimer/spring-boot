@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,13 +38,13 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public UserDTO createUser(@RequestBody @Valid UserDTO userDTO) {
+	public ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserDTO userDTO) {
 		Optional<User> user = userRepository.findByEmail(userDTO.getEmail());
 		if (user.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "user already registered");
 		}
 		userRepository.save(userDTO.convert());
-		return userDTO;
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.CREATED);
 	}
 	
 }

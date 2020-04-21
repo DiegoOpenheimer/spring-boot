@@ -3,9 +3,9 @@ package com.openheimer.demo.security;
 import java.security.Key;
 import java.util.Date;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.openheimer.demo.dto.AuthDTO;
 import com.openheimer.demo.model.User;
 
 import io.jsonwebtoken.Claims;
@@ -18,15 +18,15 @@ public class TokenService {
 
 	private Key secret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	
-	public String generateToken(Authentication authentication) {
-		User user = (User) authentication.getPrincipal();
-		return Jwts.builder()
+	public AuthDTO generateToken(User user) {
+		String token = Jwts.builder()
 				.setIssuer("com.openheimer.demo")
 				.setSubject(user.getId().toString())
 				.setId(user.getId().toString())
 				.setIssuedAt(new Date())
 				.signWith(secret)
 				.compact();
+		return new AuthDTO(token, "Bearer");
 	}
 	
 	public boolean valid(String token) {
