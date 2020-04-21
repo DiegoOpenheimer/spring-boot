@@ -48,8 +48,8 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/users").permitAll()
-				.antMatchers(HttpMethod.POST, "/auth").permitAll()
+				.antMatchers(HttpMethod.POST, "/users", "/auth").permitAll()
+				.antMatchers(HttpMethod.GET, "/movies").permitAll()
 				.antMatchers("/h2", "/h2/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
